@@ -2,16 +2,22 @@ import java.io.File;
 import java.util.Scanner;
 
 public class Main {
+    private static final double UNIT_CONST = 1024;
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-//        String path = "F:\\Games\\Steam\\clientui";
         for (;;) {
             try {
                 System.out.print("Enter a path to directory to get size or EXIT: ");
                 String path = scanner.nextLine();
-                double sizeAllFiles = getSizeAllFiles(new File(path));
                 if (path.equalsIgnoreCase("EXIT")) break;
-                printSizeAtEasyFormat(sizeAllFiles);
+                File fileForCalculateSize = new File(path);
+                if (fileForCalculateSize.isDirectory()) {
+                    double sizeAllFiles = getSizeAllFiles(fileForCalculateSize);
+                    printSizeAtEasyFormat(sizeAllFiles);
+                } else
+                {
+                    System.out.println("This is no valid path!");
+                }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -33,17 +39,17 @@ public class Main {
 
     private static void printSizeAtEasyFormat(double size) {
         String unit = "bytes";
-        if (size > 1024) {
+        if (size > UNIT_CONST) {
             unit = "Kb";
-            size /= 1024;
+            size /= UNIT_CONST;
 
-            if (size > 1024) {
+            if (size > UNIT_CONST) {
                 unit = "Mb";
-                size /= 1024;
+                size /= UNIT_CONST;
 
-                if (size > 1024) {
+                if (size > UNIT_CONST) {
                     unit = "Gb";
-                    size /= 1024;
+                    size /= UNIT_CONST;
                 }
 
             }
